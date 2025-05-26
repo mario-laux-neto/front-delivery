@@ -2,151 +2,147 @@
 
 import {
   Box,
-  Button,
   Flex,
-  Stack,
+  VStack,
   Image,
+  Heading,
   Text,
+  Button,
   Input,
-  InputGroup,
-  IconButton,
-  Link,
-  Checkbox,
-  InputRightElement,
-  FormControl,
-  FormLabel,
-  useColorModeValue,
+  useToast,
 } from "@chakra-ui/react";
-import { Divider } from "@chakra-ui/layout"; // Pode manter ou importar de chakra/react se preferir
-import { useState } from "react";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
-import { FcGoogle } from "react-icons/fc";
-import { FaGithub } from "react-icons/fa";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import axios from "@/utils/axios";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
-  const [senha, setSenha] = useState("");
-  const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
+  const router = useRouter();
+  const toast = useToast();
 
-  const bgColor = useColorModeValue("gray.50", "gray.800");
-  const cardBg = useColorModeValue("white", "gray.700");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const loginUsuario = async () => {
+    if (!email || !password) {
+      toast({
+        title: "Campos obrigatórios.",
+        description: "Por favor, preencha e-mail e senha.",
+        status: "warning",
+        duration: 3000,
+        isClosable: true,
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.post("/user/login", {
+        email,
+        password,
+      });
+
+      if (response.status === 200) {
+        toast({
+          title: "Login realizado!",
+          description: "Redirecionando...",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+
+        localStorage.setItem("token", response.data.response);
+        router.push("/home");
+      } else {
+        toast({
+          title: "Erro",
+          description: "Falha no login.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: "Erro de conexão",
+        description: "Não foi possível conectar ao servidor.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
 
   return (
-    <Flex minH="100vh" bg={bgColor}>
-      {/* Lado esquerdo com imagem */}
+    <Flex minH="100vh" bg="#1a202c" align="center" justify="center"> {/* Alterado para a mesma cor de fundo */}
       <Flex
-        flex={1}
-        align="center"
-        justify="center"
-        bgGradient="linear(to-br, purple.600, blue.500)"
-        display={{ base: "none", md: "flex" }}
+        bg="#2d3748" // Cor do card
+        borderRadius="lg"
+        boxShadow="lg"
+        overflow="hidden"
+        w={{ base: "90%", md: "800px" }}
       >
-        <Image
-          src="https://source.unsplash.com/random/600x800?tech"
-          alt="Login Image"
-          objectFit="cover"
-          w="full"
-          h="full"
-        />
-      </Flex>
+        {/* Lado da logo */}
+        <Box
+          bg="#4a5568" // Cor do fundo da logo
+          display={{ base: "none", md: "flex" }}
+          alignItems="center"
+          justifyContent="center"
+          w="50%"
+          p={6}
+        >
+          <Image src="/images/logo.jpeg" alt="Logo" maxW="350px" />
+        </Box>
 
-      {/* Formulário de login */}
-      <Flex flex={1} align="center" justify="center" p={8}>
-        <Box bg={cardBg} p={8} rounded="lg" boxShadow="lg" w="full" maxW="md">
-          <Stack spacing={6}>
-            <Box textAlign="center">
-              <Text fontSize="2xl" fontWeight="bold">
-                Acesse sua conta
-              </Text>
-            </Box>
-
-            {/* Opções de login social */}
-            <Stack spacing={4}>
-              <Button
-                leftIcon={<FcGoogle size={20} />}
-                variant="outline"
-                colorScheme="gray"
-              >
-                Entrar com Google
-              </Button>
-              <Button
-                leftIcon={<FaGithub size={20} />}
-                variant="outline"
-                colorScheme="gray"
-              >
-                Entrar com GitHub
-              </Button>
-            </Stack>
-
-            <Divider my={4} />
-
-            {/* Formulário de login tradicional */}
-            <form>
-              <Stack spacing={4}>
-                <FormControl id="email">
-                  <FormLabel>E-mail</FormLabel>
-                  <Input
-                    type="email"
-                    placeholder="Seu e-mail"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                  />
-                </FormControl>
-
-                <FormControl id="password">
-                  <FormLabel>Senha</FormLabel>
-                  <InputGroup>
-                    <Input
-                      type={showPassword ? "text" : "password"}
-                      placeholder="Sua senha"
-                      value={senha}
-                      onChange={(e) => setSenha(e.target.value)}
-                    />
-                    <InputRightElement>
-                      <IconButton
-                        variant="ghost"
-                        aria-label={
-                          showPassword ? "Ocultar senha" : "Mostrar senha"
-                        }
-                        icon={showPassword ? <ViewOffIcon /> : <ViewIcon />}
-                        size="sm"
-                        onClick={() => setShowPassword(!showPassword)}
-                      />
-                    </InputRightElement>
-                  </InputGroup>
-                </FormControl>
-
-                <Flex justify="space-between" align="center">
-                  <Checkbox
-                    isChecked={rememberMe}
-                    onChange={(e) => setRememberMe(e.target.checked)}
-                  >
-                    Lembrar de mim
-                  </Checkbox>
-                  <Link color="blue.500" fontSize="sm">
-                    Esqueci minha senha
-                  </Link>
-                </Flex>
-
-                <Button
-                  type="submit"
-                  colorScheme="blue"
-                  w="full"
-                  fontWeight="bold"
-                >
-                  Entrar
-                </Button>
-              </Stack>
-            </form>
-
-            <Text textAlign="center" fontSize="sm">
-              Não tem uma conta?{" "}
-              <Link color="blue.500" fontWeight="medium">
-                Crie a sua conta
-              </Link>
+        {/* Lado do formulário */}
+        <Box w={{ base: "100%", md: "50%" }} p={8}>
+          <VStack spacing={6} align="stretch">
+            <Heading color="white" textAlign="center">
+              Bem-vindo
+            </Heading>
+            <Text color="gray.300" textAlign="center">
+              Faça login para acessar o sistema
             </Text>
-          </Stack>
+
+            <Input
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              bg="#4a5568"
+              border="none"
+              color="white"
+              _placeholder={{ color: "gray.400" }}
+              _hover={{ bg: "#2d3748" }}
+              _focus={{ bg: "#2d3748" }}
+            />
+            <Input
+              placeholder="Senha"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              bg="#4a5568"
+              border="none"
+              color="white"
+              _placeholder={{ color: "gray.400" }}
+              _hover={{ bg: "#2d3748" }}
+              _focus={{ bg: "#2d3748" }}
+            />
+
+            <Button
+              colorScheme="blue"
+              w="full"
+              onClick={loginUsuario}
+              _hover={{ opacity: 0.9 }}
+            >
+              Entrar
+            </Button>
+            <Button
+              colorScheme="teal"
+              w="full"
+              onClick={() => router.push("/cadastro")}
+              _hover={{ opacity: 0.9 }}
+            >
+              Cadastre-se
+            </Button>
+          </VStack>
         </Box>
       </Flex>
     </Flex>
