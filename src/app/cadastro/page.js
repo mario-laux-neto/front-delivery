@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from "react";
 import {
   Flex,
   Box,
@@ -13,23 +13,22 @@ import {
   Text,
   Link,
   useToast,
-} from '@chakra-ui/react';
-import NextLink from 'next/link';
-import api from '@/utils/axios';
-import { useRouter } from 'next/navigation';
+} from "@chakra-ui/react";
+import NextLink from "next/link";
+import api from "@/utils/axios";
+import { useRouter } from "next/navigation";
 
 export default function CadastroPage() {
   const toast = useToast();
   const router = useRouter();
 
   const [form, setForm] = useState({
-    username: '',
-    name: '',
-    cpf: '',
-    phone: '',
-    email: '',
-    password: '',
-    role: '',
+    username: "",
+    name: "",
+    cpf: "",
+    phone: "",
+    email: "",
+    password: "",
   });
 
   function handleChange(e) {
@@ -37,46 +36,122 @@ export default function CadastroPage() {
     setForm((prev) => ({ ...prev, [name]: value }));
   }
 
+  function validateForm() {
+    const { username, name, cpf, phone, email, password } = form;
+
+    if (!username || !name || !cpf || !phone || !email || !password) {
+      toast({
+        title: "Erro de validação",
+        description: "Todos os campos são obrigatórios.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+      return false;
+    }
+
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      toast({
+        title: "Erro de validação",
+        description: "Email inválido.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+      return false;
+    }
+
+    if (cpf.length !== 11 || isNaN(cpf)) {
+      toast({
+        title: "Erro de validação",
+        description: "CPF deve conter 11 números.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+      return false;
+    }
+
+    if (phone.length < 10 || isNaN(phone)) {
+      toast({
+        title: "Erro de validação",
+        description: "Telefone inválido.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+      return false;
+    }
+
+    if (password.length < 6) {
+      toast({
+        title: "Erro de validação",
+        description: "A senha deve ter pelo menos 6 caracteres.",
+        status: "error",
+        duration: 4000,
+        isClosable: true,
+      });
+      return false;
+    }
+
+    return true;
+  }
+
   async function handleSubmit(e) {
     e.preventDefault();
 
+    if (!validateForm()) return;
+
     try {
-      const response = await api.post('/cadastros', form);
+      const response = await api.post("/cadastro", form, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.status === 201) {
         toast({
-          title: 'Cadastro realizado!',
-          status: 'success',
+          title: "Cadastro realizado!",
+          status: "success",
           duration: 3000,
           isClosable: true,
         });
         setForm({
-          username: '',
-          name: '',
-          cpf: '',
-          phone: '',
-          email: '',
-          password: '',
-          role: '',
+          username: "",
+          name: "",
+          cpf: "",
+          phone: "",
+          email: "",
+          password: "",
         });
-        router.push('/login');
+        router.push("/login");
       } else {
         toast({
-          title: 'Erro ao cadastrar',
-          description: response.data?.message || 'Verifique os campos',
-          status: 'error',
+          title: "Erro ao cadastrar",
+          description: response.data?.message || "Verifique os campos",
+          status: "error",
           duration: 4000,
           isClosable: true,
         });
       }
     } catch (error) {
-      toast({
-        title: 'Erro no servidor',
-        description: error.response?.data?.message || 'Tente novamente mais tarde.',
-        status: 'error',
-        duration: 4000,
-        isClosable: true,
-      });
+      if (error.response) {
+        toast({
+          title: "Erro no servidor",
+          description: error.response.data?.message || "Erro inesperado.",
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+        });
+      } else {
+        toast({
+          title: "Erro de conexão",
+          description: "Não foi possível conectar ao servidor.",
+          status: "error",
+          duration: 4000,
+          isClosable: true,
+        });
+      }
     }
   }
 
@@ -93,7 +168,7 @@ export default function CadastroPage() {
         p={8}
         rounded="md"
         shadow="md"
-        w={{ base: '100%', sm: '500px' }}
+        w={{ base: "100%", sm: "500px" }}
       >
         <Heading mb={6} textAlign="center" size="lg" color="white">
           Cadastro de Usuário
@@ -110,7 +185,7 @@ export default function CadastroPage() {
                 bg="#4a5568"
                 border="none"
                 color="white"
-                _placeholder={{ color: 'gray.400' }}
+                _placeholder={{ color: "gray.400" }}
                 _hover={{ bg: "#2d3748" }}
                 _focus={{ bg: "#2d3748" }}
               />
@@ -125,7 +200,7 @@ export default function CadastroPage() {
                 bg="#4a5568"
                 border="none"
                 color="white"
-                _placeholder={{ color: 'gray.400' }}
+                _placeholder={{ color: "gray.400" }}
                 _hover={{ bg: "#2d3748" }}
                 _focus={{ bg: "#2d3748" }}
               />
@@ -140,7 +215,7 @@ export default function CadastroPage() {
                 bg="#4a5568"
                 border="none"
                 color="white"
-                _placeholder={{ color: 'gray.400' }}
+                _placeholder={{ color: "gray.400" }}
                 _hover={{ bg: "#2d3748" }}
                 _focus={{ bg: "#2d3748" }}
               />
@@ -155,7 +230,7 @@ export default function CadastroPage() {
                 bg="#4a5568"
                 border="none"
                 color="white"
-                _placeholder={{ color: 'gray.400' }}
+                _placeholder={{ color: "gray.400" }}
                 _hover={{ bg: "#2d3748" }}
                 _focus={{ bg: "#2d3748" }}
               />
@@ -171,7 +246,7 @@ export default function CadastroPage() {
                 bg="#4a5568"
                 border="none"
                 color="white"
-                _placeholder={{ color: 'gray.400' }}
+                _placeholder={{ color: "gray.400" }}
                 _hover={{ bg: "#2d3748" }}
                 _focus={{ bg: "#2d3748" }}
               />
@@ -187,30 +262,10 @@ export default function CadastroPage() {
                 bg="#4a5568"
                 border="none"
                 color="white"
-                _placeholder={{ color: 'gray.400' }}
+                _placeholder={{ color: "gray.400" }}
                 _hover={{ bg: "#2d3748" }}
                 _focus={{ bg: "#2d3748" }}
               />
-            </FormControl>
-
-            <FormControl isRequired>
-              <FormLabel color="white">Tipo de Usuário</FormLabel>
-              <Input
-                as="select"
-                name="role"
-                value={form.role}
-                onChange={handleChange}
-                bg="#4a5568"
-                border="none"
-                color="white"
-                _hover={{ bg: "#2d3748" }}
-                _focus={{ bg: "#2d3748" }}
-              >
-                <option value="">Selecione...</option>
-                <option value="cliente">Cliente</option>
-                <option value="entregador">Entregador</option>
-                <option value="restaurante">Restaurante</option>
-              </Input>
             </FormControl>
 
             <Button type="submit" colorScheme="teal" mt={4}>
@@ -220,7 +275,7 @@ export default function CadastroPage() {
         </form>
 
         <Text mt={4} textAlign="center" color="white">
-          Já tem uma conta?{' '}
+          Já tem uma conta?{" "}
           <Link as={NextLink} href="/login" color="teal.300">
             Faça login
           </Link>

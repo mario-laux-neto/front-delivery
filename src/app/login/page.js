@@ -10,6 +10,9 @@ import {
   Button,
   Input,
   useToast,
+  FormControl,
+  FormLabel,
+  Stack,
 } from "@chakra-ui/react";
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -42,37 +45,35 @@ export default function Login() {
 
       if (response.status === 200) {
         toast({
-          title: "Login realizado!",
-          description: "Redirecionando...",
+          title: "Login realizado com sucesso!",
           status: "success",
           duration: 3000,
           isClosable: true,
         });
-
         localStorage.setItem("token", response.data.response);
-        router.push("/home");
+        router.push("/home"); // Redireciona para a página home
       } else {
         toast({
-          title: "Erro",
-          description: "Falha no login.",
+          title: "Erro ao fazer login",
+          description: response.data?.message || "Credenciais inválidas",
           status: "error",
-          duration: 3000,
+          duration: 4000,
           isClosable: true,
-        });
+        }); 
       }
     } catch (error) {
       toast({
-        title: "Erro de conexão",
-        description: "Não foi possível conectar ao servidor.",
+        title: "Erro no servidor",
+        description: error.response?.data?.message || "Erro inesperado.",
         status: "error",
-        duration: 3000,
+        duration: 4000,
         isClosable: true,
       });
     }
   };
 
   return (
-    <Flex minH="100vh" bg="#1a202c" align="center" justify="center"> {/* Alterado para a mesma cor de fundo */}
+    <Flex minH="100vh" bg="#1a202c" align="center" justify="center">
       <Flex
         bg="#2d3748" // Cor do card
         borderRadius="lg"
@@ -102,46 +103,58 @@ export default function Login() {
               Faça login para acessar o sistema
             </Text>
 
-            <Input
-              placeholder="Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              bg="#4a5568"
-              border="none"
-              color="white"
-              _placeholder={{ color: "gray.400" }}
-              _hover={{ bg: "#2d3748" }}
-              _focus={{ bg: "#2d3748" }}
-            />
-            <Input
-              placeholder="Senha"
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              bg="#4a5568"
-              border="none"
-              color="white"
-              _placeholder={{ color: "gray.400" }}
-              _hover={{ bg: "#2d3748" }}
-              _focus={{ bg: "#2d3748" }}
-            />
-
-            <Button
-              colorScheme="blue"
-              w="full"
-              onClick={loginUsuario}
-              _hover={{ opacity: 0.9 }}
-            >
-              Entrar
-            </Button>
-            <Button
-              colorScheme="teal"
-              w="full"
-              onClick={() => router.push("/cadastro")}
-              _hover={{ opacity: 0.9 }}
-            >
-              Cadastre-se
-            </Button>
+            <form onSubmit={loginUsuario}>
+              <Stack spacing={4}>
+                <FormControl isRequired>
+                  <FormLabel color="white">Email</FormLabel>
+                  <Input
+                    name="email"
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    bg="#4a5568"
+                    border="none"
+                    color="white"
+                    _placeholder={{ color: "gray.400" }}
+                    _hover={{ bg: "#2d3748" }}
+                    _focus={{ bg: "#2d3748" }}
+                  />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel color="white">Senha</FormLabel>
+                  <Input
+                    name="password"
+                    type="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    bg="#4a5568"
+                    border="none"
+                    color="white"
+                    _placeholder={{ color: "gray.400" }}
+                    _hover={{ bg: "#2d3748" }}
+                    _focus={{ bg: "#2d3748" }}
+                  />
+                </FormControl>
+                <Button
+                  type="submit"
+                  colorScheme="teal"
+                  mt={4}
+                  w="full"
+                  onClick={loginUsuario}
+                  _hover={{ opacity: 0.9 }}
+                >
+                  Entrar
+                </Button>
+                <Button
+                  colorScheme="teal"
+                  w="full"
+                  onClick={() => router.push("/cadastro")}
+                  _hover={{ opacity: 0.9 }}
+                >
+                  Cadastre-se
+                </Button>
+              </Stack>
+            </form>
           </VStack>
         </Box>
       </Flex>
