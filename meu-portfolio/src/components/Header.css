@@ -1,0 +1,56 @@
+.header,
+.footer {
+  background-color: #282c34;
+  color: white;
+  text-align: center;
+  padding: 2rem 0;
+}
+
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1rem 0;
+  background-color: #282c34;
+}
+
+nav a {
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #00bcd4;
+}
+
+.toggle-container {
+  text-align: center;
+  margin: 1rem 0;
+}
+
+.toggle-dark-mode {
+  padding: 0.5rem 1rem;
+  background-color: #007f92;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.toggle-dark-mode:hover {
+  background-color: #005f6b;
+}
+
+.light {
+  background-color: #fafafa;
+  color: #333;
+}
+
+.dark {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+}

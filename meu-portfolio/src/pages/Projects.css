@@ -1,0 +1,78 @@
+/* Estilo Geral para a seção de Projetos */
+.projects {
+  background-color: #f4f4f9;
+  padding: 50px 20px;
+  color: #333;
+}
+
+.projects h2 {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 40px;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Lista de Projetos com flexbox para layout */
+.projects ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); /* Flexível, responsivo */
+  gap: 20px;
+}
+
+/* Estilo para os Cards de Projetos */
+.project-card {
+  background-color: #fff;
+  padding: 20px;
+  margin: 10px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  font-size: 1.2rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.project-card h3 {
+  color: #0077b6;
+  margin-bottom: 10px;
+}
+
+.project-card p {
+  color: #666;
+  margin-bottom: 15px;
+}
+
+/* Efeito de Hover nos Cards */
+.project-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+  .projects {
+    padding: 40px 15px;
+  }
+
+  .project-card {
+    font-size: 1.1rem;
+    padding: 18px;
+  }
+}
+
+/* Responsividade para telas menores */
+@media (max-width: 480px) {
+  .projects {
+    padding: 30px 10px;
+  }
+
+  .project-card {
+    font-size: 1rem;
+    padding: 16px;
+  }
+}

@@ -1,0 +1,44 @@
+.social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.social-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  border-radius: 50px;
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  transition: transform 0.3s ease;
+}
+
+.social-button:hover {
+  transform: translateY(-3px);
+}
+
+.whatsapp {
+  background-color: #25D366;
+}
+
+.github {
+  background-color: #333;
+}
+
+.linkedin {
+  background-color: #0077B5;
+}
+
+.instagram {
+  background: linear-gradient(45deg, #405DE6, #5851DB, #833AB4, #C13584, #E1306C, #FD1D1D);
+}
+
+.social-icon {
+  width: 20px;
+  height: 20px;
+}

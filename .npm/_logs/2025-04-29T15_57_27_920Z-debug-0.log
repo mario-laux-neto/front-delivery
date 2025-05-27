@@ -1,0 +1,13 @@
+0 verbose cli /usr/bin/node /usr/bin/npm
+1 info using npm@11.3.0
+2 info using node@v22.14.0
+3 silly config load:file:/usr/lib/node_modules/npm/npmrc
+4 silly config load:file:/home/mario/meu-sistema-vacinacao/.npmrc
+5 silly config load:file:/home/mario/.npmrc
+6 silly config load:file:/usr/etc/npmrc
+7 verbose title npm start
+8 verbose argv "start"
+9 verbose logfile logs-max:10 dir:/home/mario/.npm/_logs/2025-04-29T15_57_27_920Z-
+10 verbose logfile /home/mario/.npm/_logs/2025-04-29T15_57_27_920Z-debug-0.log
+11 silly logfile start cleaning logs, removing 1 files
+12 silly logfile done cleaning log files

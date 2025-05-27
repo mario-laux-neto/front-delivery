@@ -1,0 +1,137 @@
+/* Reset basic margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #fafafa;
+  color: #333;
+  line-height: 1.6;
+}
+
+/* Navbar Styling */
+nav {
+  display: flex;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background-color: #333;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+nav a:hover {
+  color: #00bcd4;
+  text-decoration: underline;
+}
+
+/* Header and Footer Styling */
+.header,
+.footer {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.footer {
+  margin-top: 20px;
+}
+
+/* Main Content Styling */
+main {
+  padding: 3rem 2rem;
+  text-align: center;
+}
+
+/* Section Styles */
+.home,
+.projects,
+.about,
+.contact {
+  margin-bottom: 3rem;
+}
+
+/* Projects List */
+.projects ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.projects li {
+  background-color: #fff;
+  padding: 20px;
+  margin: 15px 0;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  width: 80%;
+  max-width: 800px;
+  font-size: 1.1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.projects li:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+.projects li strong {
+  color: #00bcd4;
+}
+
+/* Typography Enhancements */
+h1,
+h2 {
+  color: #333;
+  font-weight: bold;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+p {
+  font-size: 1.1rem;
+  color: #666;
+}
+
+/* src/index.css OU src/App.css */
+@media (max-width: 768px) {
+  .container {
+    padding: 1rem;
+  }
+
+  .about,
+  .projects,
+  .contact {
+    padding: 1rem;
+  }
+
+  h1 {
+    font-size: 2rem;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+  }
+
+  p {
+    font-size: 1rem;
+  }
+}
