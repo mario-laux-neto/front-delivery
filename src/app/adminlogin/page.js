@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Box,
   Flex,
@@ -18,14 +17,13 @@ import React, { useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "@/utils/axios";
 
-export default function Login() {
+export default function AdminLogin() {
   const router = useRouter();
   const toast = useToast();
-
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const loginUsuario = async () => {
+  const loginAdmin = async () => {
     if (!email || !password) {
       toast({
         title: "Campos obrigatórios.",
@@ -38,7 +36,7 @@ export default function Login() {
     }
 
     try {
-      const response = await axios.post("/user/login", {
+      const response = await axios.post("/admin/login", {
         email,
         password,
       });
@@ -50,8 +48,9 @@ export default function Login() {
           duration: 3000,
           isClosable: true,
         });
-        localStorage.setItem("token", response.data.response); // Comentado: Não utilizaremos mais o token JWT
-        router.push("/home"); // Redireciona para a página home
+        localStorage.setItem("token", response.data.response);
+        localStorage.setItem("userType", "admin");
+        router.push("/admin"); // Redireciona para a página de admin
       } else {
         toast({
           title: "Erro ao fazer login",
@@ -72,45 +71,10 @@ export default function Login() {
     }
   };
 
-  async function handleLogin(e) {
-    e.preventDefault();
-
-    try {
-      const response = await axios.post("/user/login", { email, password });
-
-      if (response.status === 200) {
-        toast({
-          title: "Login realizado com sucesso!",
-          status: "success",
-          duration: 3000,
-          isClosable: true,
-        });
-        localStorage.setItem("token", response.data.response); // Comentado: Não utilizaremos mais o token JWT
-        router.push("/home"); // Redireciona para a página home
-      } else {
-        toast({
-          title: "Erro ao fazer login",
-          description: response.data?.message || "Credenciais inválidas.",
-          status: "error",
-          duration: 4000,
-          isClosable: true,
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "Erro no servidor",
-        description: error.response?.data?.message || "Erro inesperado.",
-        status: "error",
-        duration: 4000,
-        isClosable: true,
-      });
-    }
-  }
-
   return (
     <Flex minH="100vh" bg="#1a202c" align="center" justify="center">
       <Flex
-        bg="#2d3748" // Cor do card
+        bg="#2d3748"
         borderRadius="lg"
         boxShadow="lg"
         overflow="hidden"
@@ -118,7 +82,7 @@ export default function Login() {
       >
         {/* Lado da logo */}
         <Box
-          bg="#4a5568" // Cor do fundo da logo
+          bg="#4a5568"
           display={{ base: "none", md: "flex" }}
           alignItems="center"
           justifyContent="center"
@@ -132,13 +96,13 @@ export default function Login() {
         <Box w={{ base: "100%", md: "50%" }} p={8}>
           <VStack spacing={6} align="stretch">
             <Heading color="white" textAlign="center">
-              Bem-vindo
+              Área do Administrador
             </Heading>
             <Text color="gray.300" textAlign="center">
-              Faça login para acessar o sistema
+              Faça login para gerenciar seu restaurante
             </Text>
 
-            <form onSubmit={handleLogin}>
+            <form onSubmit={(e) => { e.preventDefault(); loginAdmin(); }}>
               <Stack spacing={4}>
                 <FormControl isRequired>
                   <FormLabel color="white">Email</FormLabel>
@@ -155,6 +119,7 @@ export default function Login() {
                     _focus={{ bg: "#2d3748" }}
                   />
                 </FormControl>
+
                 <FormControl isRequired>
                   <FormLabel color="white">Senha</FormLabel>
                   <Input
@@ -170,6 +135,7 @@ export default function Login() {
                     _focus={{ bg: "#2d3748" }}
                   />
                 </FormControl>
+
                 <Button
                   type="submit"
                   colorScheme="teal"
@@ -177,15 +143,17 @@ export default function Login() {
                   w="full"
                   _hover={{ opacity: 0.9 }}
                 >
-                  Entrar
+                  Entrar como Administrador
                 </Button>
+
                 <Button
+                  variant="outline"
                   colorScheme="teal"
                   w="full"
-                  onClick={() => router.push("/cadastro")}
+                  onClick={() => router.push("/login")}
                   _hover={{ opacity: 0.9 }}
                 >
-                  Cadastre-se
+                  Voltar para Login de Cliente
                 </Button>
               </Stack>
             </form>
@@ -195,3 +163,4 @@ export default function Login() {
     </Flex>
   );
 }
+b

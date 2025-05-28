@@ -13,6 +13,7 @@ import {
   Text,
   Link,
   useToast,
+  Select,
 } from "@chakra-ui/react";
 import NextLink from "next/link";
 import api from "@/utils/axios";
@@ -29,6 +30,7 @@ export default function CadastroPage() {
     phone: "",
     email: "",
     password: "",
+    role: "user", // Valor padrão para o campo role
   });
 
   function handleChange(e) {
@@ -103,7 +105,7 @@ export default function CadastroPage() {
     if (!validateForm()) return;
 
     try {
-      const response = await api.post("/cadastro", form, {
+      const response = await api.post("/user", form, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -123,6 +125,7 @@ export default function CadastroPage() {
           phone: "",
           email: "",
           password: "",
+          role: "user", // Resetando para o valor padrão
         });
         router.push("/login");
       } else {
@@ -250,6 +253,25 @@ export default function CadastroPage() {
                 _hover={{ bg: "#2d3748" }}
                 _focus={{ bg: "#2d3748" }}
               />
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel color="white">Role</FormLabel>
+              <Select
+                name="role"
+                value={form.role}
+                onChange={handleChange}
+                bg="#4a5568"
+                border="none"
+                color="white"
+                _placeholder={{ color: "gray.400" }}
+                _hover={{ bg: "#2d3748" }}
+                _focus={{ bg: "#2d3748" }}
+              >
+                <option value="user">Usuário</option>
+                <option value="admin">Administrador</option>
+                <option value="motoboy">Motoboy</option>
+              </Select>
             </FormControl>
 
             <FormControl isRequired>
