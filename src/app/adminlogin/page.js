@@ -58,7 +58,7 @@ export default function AdminLogin() {
           status: "error",
           duration: 4000,
           isClosable: true,
-        }); 
+        });
       }
     } catch (error) {
       toast({
@@ -102,7 +102,12 @@ export default function AdminLogin() {
               Faça login para gerenciar seu restaurante
             </Text>
 
-            <form onSubmit={(e) => { e.preventDefault(); loginAdmin(); }}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault();
+                loginAdmin();
+              }}
+            >
               <Stack spacing={4}>
                 <FormControl isRequired>
                   <FormLabel color="white">Email</FormLabel>
@@ -163,4 +168,3 @@ export default function AdminLogin() {
     </Flex>
   );
 }
-b
